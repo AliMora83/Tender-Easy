@@ -16,7 +16,7 @@ services:
     container_name: tender-easy-app
     restart: unless-stopped
     ports:
-      - "3000:3000"
+      - "3005:3000"
     env_file:
       - .env.local
     environment:
