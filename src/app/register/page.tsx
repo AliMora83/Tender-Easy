@@ -15,6 +15,8 @@ export default function RegisterPage() {
   const router = useRouter();
   const { user, loading } = useAuth();
 
+  const [popiaAccepted, setPopiaAccepted] = useState(false);
+
   useEffect(() => {
     if (!loading && user) {
       router.push("/dashboard");
@@ -24,6 +26,10 @@ export default function RegisterPage() {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    if (!popiaAccepted) {
+      setError("You must accept the POPIA & Liability Terms to create an account.");
+      return;
+    }
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       router.push("/dashboard");
@@ -86,6 +92,25 @@ export default function RegisterPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
+            </div>
+          </div>
+
+          <div className="flex items-start">
+            <div className="flex h-6 items-center">
+              <input
+                id="popia"
+                name="popia"
+                type="checkbox"
+                required
+                checked={popiaAccepted}
+                onChange={(e) => setPopiaAccepted(e.target.checked)}
+                className="h-4 w-4 rounded border-slate-700 bg-slate-800 text-blue-600 focus:ring-blue-600 focus:ring-offset-slate-900"
+              />
+            </div>
+            <div className="ml-3 text-xs leading-5">
+              <label htmlFor="popia" className="text-slate-400">
+                I agree to the <span className="font-medium text-slate-300">Terms of Service</span> and consent to the processing of my company data in accordance with the <span className="font-medium text-slate-300">Protection of Personal Information Act (POPIA)</span>. Tender Easy assumes no strict liability for bid disqualifications.
+              </label>
             </div>
           </div>
 
